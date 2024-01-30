@@ -12,9 +12,9 @@ else:
 
 db = SQLAlchemy(app)
 
-from .blueprints.v1.hello import hello_bp
+from .blueprints import api_bp
 
-app.register_blueprint(hello_bp, url_prefix='/api/v1/hello')
+app.register_blueprint(api_bp, url_prefix='/api')
 
 @app.errorhandler(404)
 def not_found(err):
