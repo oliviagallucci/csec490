@@ -6,4 +6,4 @@
     let content = `<h1>Header</h1><p>Paragraph</p>`;
 </script>
 
-<CardTemplate>{@html content}</CardTemplate>
+<CardTemplate><div class="prose">{@html content}</div></CardTemplate>

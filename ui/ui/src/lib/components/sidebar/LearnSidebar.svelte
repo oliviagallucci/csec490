@@ -7,7 +7,7 @@
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
             alt="Your Company"
         />
-        <span class="h-8 inline-flex items-center text-white px-2 font-brand">Club Name</span>
+        <span class="h-8 inline-flex items-center text-white px-2 font-brand leading-1">Club Name</span>
     </div>
     <nav class="flex flex-1 flex-col">
         <ul role="list" class="flex flex-1 flex-col gap-y-7">
