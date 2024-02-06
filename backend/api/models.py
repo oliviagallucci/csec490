@@ -27,7 +27,7 @@ class Class(db.Model):
     slug = db.Column(db.String)
     visible = db.Column(db.Boolean, default=True)
 
-    organization_id = db.Column(UUID(as_uuid=True), db.ForeignKey('organizations.id'))
+    organization_id = db.Column(UUID(as_uuid=True), db.ForeignKey('organizations.uuid'))
     lessons = db.relationship('Lesson', backref='class', lazy=True)
 
     def __init__(self, name, organization_id):
@@ -46,7 +46,7 @@ class Lesson(db.Model):
     visible = db.Column(db.Boolean, default=True)
     config = db.Column(db.String)
 
-    class_id = db.Column(UUID(as_uuid=True), db.ForeignKey('classes.id'))
+    class_id = db.Column(UUID(as_uuid=True), db.ForeignKey('classes.uuid'))
     flags = db.relationship('Flag', backref='lesson', lazy=True)
 
     def __init__(self, name, class_id, config):
@@ -65,7 +65,7 @@ class Flag(db.Model):
     config = db.Column(db.String)
     points = db.Column(db.Integer)
     
-    lesson_id = db.Column(UUID(as_uuid=True), db.ForeignKey('lessond.uuid'))
+    lesson_id = db.Column(UUID(as_uuid=True), db.ForeignKey('lessons.uuid'))
 
     def __init__(self, type, config, points, lesson_id):
         self.type = type
