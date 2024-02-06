@@ -1,0 +1,16 @@
+config_local.py
+config.local.py
+config.py
+.env
+__pycache__/*
+*/__pycache__/*
+rrd/*
+*.pyc
+*_key
+Pipfile*
+
+# venv parts
+bin
+pyvenv.cfg
+site-packages
+venv
