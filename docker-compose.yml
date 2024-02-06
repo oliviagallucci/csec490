@@ -5,6 +5,8 @@ services:
   db:
     image: postgres:latest
     restart: always
+    ports:
+      - 5432:5432
     env_file:
       - .env
     networks:
@@ -14,27 +16,15 @@ services:
   backend:
     build: backend
     restart: always
+    ports:
+      - 8080:8080
     depends_on:
       - db
     env_file:
       - .env
     networks:
       - backend
-      - proxy
-
-  caddy:
-    image: caddy:latest
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-    ports:
-      - 8080:8080
-    networks:
-      - proxy
-    depends_on:
-      #- frontend
-      - backend
 
 networks:
   backend:
-  proxy:
 
