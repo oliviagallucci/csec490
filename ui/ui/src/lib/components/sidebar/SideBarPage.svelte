@@ -1,6 +1,7 @@
 <script>
     import { fade, slide } from "svelte/transition";
     let offCanvasOpen = false;
+    export let title = "";
     import LearnSidebar from "$lib/components/sidebar/LearnSidebar.svelte";
 </script>
 
@@ -87,7 +88,8 @@
                     </div>
 
                     <!-- Sidebar component, swap this element with another sidebar if you like -->
-                    <LearnSidebar />
+                    <slot name="sidebar">
+                        </slot>
                 </div>
             </div>
         {/if}
@@ -97,7 +99,7 @@
     <div
         class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col"
     >
-        <LearnSidebar />
+        <slot name="sidebar"></slot>
         
     </div>
 
@@ -128,7 +130,7 @@
             </svg>
         </button>
         <div class="flex-1 text-sm font-semibold leading-6 text-white">
-            Dashboard
+            {title}
         </div>
         <a href="#">
             <span class="sr-only">Your profile</span>
