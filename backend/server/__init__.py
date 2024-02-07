@@ -1,4 +1,4 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, send_file
 from flask_sqlalchemy import SQLAlchemy
 import os
 from flask_migrate import Migrate
@@ -21,18 +21,16 @@ app.register_blueprint(api_bp, url_prefix='/api')
 
 @app.route('/')
 def index():
-    return app.send_static_file('200.html')
+    return send_file(os.path.join(os.getcwd(), "200.html"))
 
 @app.route('/<path>')
 def not_index(path):
-    return app.send_static_file('200.html')
+    return send_file(os.path.join(os.getcwd(), "200.html"))
 
-@app.route('/static/<path:filename>')
-def static_file(filename):
-    return send_from_directory(os.path.join(os.getcwd(), "static"), filename)
+@app.route('/favicon.png')
+def favicon():
+    return send_file(os.path.join(os.getcwd(), "favicon.png"))
 
 @app.errorhandler(404)
 def not_found(err):
     return "Page Not Found"
-
-

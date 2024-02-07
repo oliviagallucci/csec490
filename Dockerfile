@@ -10,5 +10,9 @@ WORKDIR /opt/server
 COPY backend/requirements.txt .
 RUN pip install -r requirements.txt
 COPY backend/ .
-COPY --from=frontend /opt/frontend/build/ ./static
-ENTRYPOINT gunicorn server:app --bind=0.0.0.0:8080 --log-level debug
+# There's gotta bea better way to do this
+COPY --from=frontend /opt/frontend/build/200.html .
+COPY --from=frontend /opt/frontend/build/favicon.png .
+COPY --from=frontend /opt/frontend/build/static ./static
+
+ENTRYPOINT gunicorn server:app --bind=0.0.0.0:8080 --workers=5
