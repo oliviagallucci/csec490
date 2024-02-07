@@ -5,7 +5,8 @@ export default {
     extend: {
       fontFamily:{
           'brand': ['"Inter"', 'sans-serif'],
-          'header': ['"Inter"', 'sans-serif']
+          'header': ['"Inter"', 'sans-serif'],
+          'nav': ['"Inter"', 'sans-serif'],
       },
       transitionProperty: {
         'height': 'height',
