@@ -19,12 +19,9 @@ from .models import *
 
 app.register_blueprint(api_bp, url_prefix='/api')
 
-@app.route('/')
-def index():
-    return send_file(os.path.join(os.getcwd(), "200.html"))
-
-@app.route('/<path>')
-def not_index(path):
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def index(path):
     return send_file(os.path.join(os.getcwd(), "200.html"))
 
 @app.route('/favicon.png')
