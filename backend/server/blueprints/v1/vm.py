@@ -1,8 +1,16 @@
+"""
+TODO
+
+Virtual Machien (VM) management
+"""
 from flask import Blueprint
 
-bp = Blueprint('vm', __name__)
+bp = Blueprint("vm", __name__)
 
-@bp.route('/')
+
+@bp.route("/")
 def root():
+    """
+    TODO
+    """
     return "VM"
-
