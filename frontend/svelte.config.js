@@ -11,7 +11,8 @@ const config = {
 			
 		}),
 		paths: {
-			base: '/static'
+			base: ''
+			//base: '/static'
 		}
 	},
 	preprocess: vitePreprocess()

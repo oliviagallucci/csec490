@@ -7,6 +7,7 @@ export default {
           'brand': ['"Inter"', 'sans-serif'],
           'header': ['"Inter"', 'sans-serif'],
           'nav': ['"Inter"', 'sans-serif'],
+          'code': ['Jetbrains Mono', 'monospace']
       },
       transitionProperty: {
         'height': 'height',
@@ -24,6 +25,7 @@ export default {
   },
   plugins: [
     require('@tailwindcss/typography'),
+    require('@tailwindcss/forms')
   ],
 }
 

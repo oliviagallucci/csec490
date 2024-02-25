@@ -46,8 +46,25 @@ import CardTemplate from "./CardTemplate.svelte";
             }
         }, 500);
     }
+    /**
+     * @property mode {('view'|'edit')}
+     */
+    export var mode = "view";
+    export var config = {
+        "image":""
+    }
 </script>
 <CardTemplate>
+    {#if mode == "edit"}
+    <input
+                type="text"
+                name="vmURL"
+                id="vmURL"
+                class="block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 p-2"
+                placeholder="VM URL"
+                bind:value={config["image"]}
+            />
+    {:else}
     <h2>VM Name</h2>
     {#if vmState === VMSTATE.NONE}
     <div out:fade={{duration: TRANSITION_DURATION}} in:fade={{duration: TRANSITION_DURATION, delay: TRANSITION_DURATION}}>
@@ -74,5 +91,6 @@ import CardTemplate from "./CardTemplate.svelte";
     </div>
     {:else if vmState === VMSTATE.ERROR}
     <p>There was an error</p>
+    {/if}
     {/if}
 </CardTemplate>

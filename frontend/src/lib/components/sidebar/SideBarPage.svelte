@@ -2,7 +2,6 @@
     import { fade, slide } from "svelte/transition";
     let offCanvasOpen = false;
     export let title = "";
-    import LearnSidebar from "$lib/components/sidebar/LearnSidebar.svelte";
 </script>
 
 <div>
@@ -28,9 +27,9 @@
                 aria-label="Close off-canvas menu"
             ></div>
         {/if}
-        {#if offCanvasOpen}
             <div
-                class="fixed inset-0 flex"
+                class="fixed inset-0 flex transform ease-in-out duration-300 transform {offCanvasOpen ? '-translate-x-0' : '-translate-x-full'}"
+
                 transition:slide={{ duration: 300, axis: "x" }}
             >
                 <!--
@@ -92,7 +91,6 @@
                         </slot>
                 </div>
             </div>
-        {/if}
     </div>
 
     <!-- Static sidebar for desktop -->
