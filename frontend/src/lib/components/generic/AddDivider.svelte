@@ -11,6 +11,8 @@
 </script>
 <br />
 {#if open}
+<div class="container mx-auto px-4 sm:p-6 lg:p-8  rounded transition-[height]">
+
 <Button style="error" callback={()=>{open = false;}}>Close</Button>
 <br />
 <br />
@@ -19,6 +21,7 @@
     <Button callback={()=>{callback(option)}}>{option}</Button>&nbsp;
     {/each}
 </ul>
+</div>
 
 {:else}
 <div class="relative">

@@ -28,13 +28,13 @@
         {
             type: "text",
             config: {
-                value: "",
+                value: "<h1>Hello, World</h1>",
             },
         },
         {
             type: "vm",
             config:{
-                image:""
+                image:"http://cdn.example.com/path/to/image.ova"
             }
         }
     ];
@@ -88,9 +88,14 @@
     </span>
 </PageTitle>
 {#each cards as c, index (index)}
-    <AddDivider onAdd={(type)=>{
-        addElement(index, type);
-    }}/>
+{#if mode=="edit"}
+<AddDivider onAdd={(type)=>{
+    addElement(index, type);
+}}/>
+{:else}
+<br />
+{/if}
+    
 
     {#if c["type"] == "ctf"}
         <CtfCard {mode} bind:config={cards[index]["config"]} />
@@ -102,6 +107,9 @@
     {/if}
     
 {/each}
+{#if mode=="edit"}
 <AddDivider onAdd={(type)=>{
     addElement(cards.length+1, type);
 }}/>
+{/if}
+

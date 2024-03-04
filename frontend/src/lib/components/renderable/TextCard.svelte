@@ -1,5 +1,6 @@
 <script>
     import CardTemplate from "./CardTemplate.svelte";
+    import Editor from "@tinymce/tinymce-svelte";
     /**
      * @property mode {('view'|'edit')}
      */
@@ -11,8 +12,15 @@
 
 <CardTemplate>
     {#if mode == "edit"}
-        <textarea class="font-code w-full" rows="5" bind:value={config["content"]}/>
+    <Editor
+    channel="6"
+    id="uuid"
+   
+    scriptSrc="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js"
+    modelEvents="input change undo redo"
+    bind:value={config["content"]}
+  />
     {:else}
-        <div class="prose">{@html config["content"]}</div>
+        <div class="prose min w-full max-w-full">{@html config["content"]}</div>
     {/if}
 </CardTemplate>
