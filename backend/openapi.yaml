@@ -79,6 +79,13 @@ paths:
     get:
       summary: Get all lessons, or a specific lesson by ID
       parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
         - in: query
           name: id
           schema:
@@ -96,6 +103,14 @@ paths:
                   $ref: '#/components/schemas/Lesson'
     post:
       summary: Create a new lesson
+      parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
       requestBody:
         required: true
         content:
@@ -113,6 +128,13 @@ paths:
     put:
       summary: Update a lesson by ID
       parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
         - in: path
           name: lessonId
           required: true
@@ -137,6 +159,13 @@ paths:
       summary: Delete a lesson by ID
       parameters:
         - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+        - in: path
           name: lessonId
           required: true
           schema:
@@ -150,6 +179,20 @@ paths:
     get:
       summary: Get all flags, or a specific flag by ID
       parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+        - in: path
+          name: lessonId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the lesson
         - in: query
           name: id
           schema:
@@ -167,6 +210,21 @@ paths:
                   $ref: '#/components/schemas/Flag'
     post:
       summary: Create a new flag
+      parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+        - in: path
+          name: lessonId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the lesson
       requestBody:
         required: true
         content:
@@ -185,12 +243,26 @@ paths:
       summary: Update a lesson by ID
       parameters:
         - in: path
-          name: flagId
+          name: classId
           required: true
           schema:
             type: string
             format: uuid
           description: The ID of the class
+        - in: path
+          name: lessonId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the lesson
+        - in: path
+          name: flagId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the flag
       requestBody:
         required: true
         content:
@@ -207,6 +279,20 @@ paths:
     delete:
       summary: Delete a flag by ID
       parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+        - in: path
+          name: lessonId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the lesson
         - in: path
           name: flagId
           required: true
