@@ -3,10 +3,12 @@ version: '3.8'
 services:
   # PostgreSQL Database
   db:
-    image: postgres:latest
+    image: docker.io/postgres:latest
     restart: always
     ports:
       - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
     env_file:
       - .env
     networks:
@@ -27,4 +29,7 @@ services:
 
 networks:
   backend:
+volumes:
+  db-data:
+
 

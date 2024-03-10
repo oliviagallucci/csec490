@@ -47,10 +47,6 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("uuid"),
     )
-    op.drop_table("organizations")
-    with op.batch_alter_table("classes", schema=None) as batch_op:
-        batch_op.drop_constraint("classes_organization_id_fkey", type_="foreignkey")
-        batch_op.drop_column("organization_id")
 
     with op.batch_alter_table("users", schema=None) as batch_op:
         batch_op.add_column(sa.Column("administrator", sa.Boolean(), nullable=True))
@@ -63,24 +59,6 @@ def downgrade():
     with op.batch_alter_table("users", schema=None) as batch_op:
         batch_op.drop_column("administrator")
 
-    with op.batch_alter_table("classes", schema=None) as batch_op:
-        batch_op.add_column(
-            sa.Column("organization_id", sa.UUID(), autoincrement=False, nullable=True)
-        )
-        batch_op.create_foreign_key(
-            "classes_organization_id_fkey",
-            "organizations",
-            ["organization_id"],
-            ["uuid"],
-        )
-
-    op.create_table(
-        "organizations",
-        sa.Column("uuid", sa.UUID(), autoincrement=False, nullable=False),
-        sa.Column("name", sa.VARCHAR(), autoincrement=False, nullable=True),
-        sa.Column("slug", sa.VARCHAR(), autoincrement=False, nullable=True),
-        sa.PrimaryKeyConstraint("uuid", name="organizations_pkey"),
-    )
     op.drop_table("permissions")
     op.drop_table("metadata")
     # ### end Alembic commands ###
