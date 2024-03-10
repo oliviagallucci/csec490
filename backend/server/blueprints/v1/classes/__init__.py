@@ -18,7 +18,7 @@ def create():
         new_class = Class(class_name)
         db.session.add(new_class)
         db.session.commit()
-        return jsonify(new_class.json())
+        return jsonify(new_class.json()), 201
     return "Class Name Required", 400
 
 @bp.route("/", methods=["GET"])
@@ -28,7 +28,7 @@ def read():
     """
     id_filter = request.args.get("id")
     if id_filter:
-        return jsonify(Class.query.get(id_filter).json())
+        return jsonify([Class.query.get(id_filter).json()])
     return jsonify(list(map(lambda x: x.json(), Class.query.all())))
 
 @bp.route("/<class_id>", methods=["PUT"])

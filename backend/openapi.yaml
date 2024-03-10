@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  title: CSEC 490 API
+  version: 0.0.1
+
+paths:
+  /api/v1/class:
+    get:
+      summary: Get all classes, or a specific class by ID
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+      responses:
+        '200':
+          description: A list of classes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Class'
+    post:
+      summary: Create a new class
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Class'
+      responses:
+        '201':
+          description: Class created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+  /api/v1/class/{classId}:
+    put:
+      summary: Update a class by ID
+      parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Class'
+      responses:
+        '200':
+          description: Class updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Class'
+    delete:
+      summary: Delete a class by ID
+      parameters:
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+      responses:
+        '200':
+          description: Class deleted
+  /api/v1/class/{classId}/lesson:
+    get:
+      summary: Get all lessons, or a specific lesson by ID
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the lesson
+      responses:
+        '200':
+          description: A list of lessons
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lesson'
+    post:
+      summary: Create a new lesson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Class'
+      responses:
+        '201':
+          description: Lesson created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+  /api/v1/class/{classId}/lesson/{lessonId}:
+    put:
+      summary: Update a lesson by ID
+      parameters:
+        - in: path
+          name: lessonId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lesson'
+      responses:
+        '200':
+          description: Lesson updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lesson'
+    delete:
+      summary: Delete a lesson by ID
+      parameters:
+        - in: path
+          name: lessonId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the lesson
+      responses:
+        '200':
+          description: Lesson deleted
+  /api/v1/class/{classId}/lesson/{lessonId}/flag:
+    get:
+      summary: Get all flags, or a specific flag by ID
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the flag
+      responses:
+        '200':
+          description: A list of flags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flag'
+    post:
+      summary: Create a new flag
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Flag'
+      responses:
+        '201':
+          description: Flag created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flag'
+  /api/v1/class/{classId}/lesson/{lessonId}/flag/{flagId}:
+    put:
+      summary: Update a lesson by ID
+      parameters:
+        - in: path
+          name: flagId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the class
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Flag'
+      responses:
+        '200':
+          description: Flag updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flag'
+    delete:
+      summary: Delete a flag by ID
+      parameters:
+        - in: path
+          name: flagId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the flag
+      responses:
+        '200':
+          description: Flag deleted
+components:
+  schemas:
+    Class:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        visible:
+          type: boolean
+      required:
+        - name
+    Lesson:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        name:
+          type: string
+        config:
+          type: string
+        visible:
+          type: boolean
+      required:
+        - name
+    Flag:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        style:
+          type: string
+        config:
+          type: string
+        points:
+          type: integer
+      required: []

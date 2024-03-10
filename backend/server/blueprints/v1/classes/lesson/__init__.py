@@ -19,7 +19,7 @@ def create(class_id):
         new_lesson = Lesson(lesson_name, class_id, "")
         db.session.add(new_lesson)
         db.session.commit()
-        return jsonify(new_lesson.json())
+        return jsonify(new_lesson.json()), 201
     return "Lesson Name Required", 400
 
 @bp.route("/", methods=["GET"])
@@ -29,7 +29,7 @@ def read(class_id):
     """
     id_filter = request.args.get("id")
     if id_filter:
-        return jsonify(Lesson.query.get(id_filter).json())
+        return jsonify([Lesson.query.get(id_filter).json()])
     return jsonify(list(map(lambda x: x.json(), Lesson.query.all())))
 
 @bp.route("/<lesson_id>", methods=["PUT"])

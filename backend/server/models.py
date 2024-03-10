@@ -78,6 +78,17 @@ class Lesson(db.Model):
     class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
     flags = db.relationship("Flag", backref="lesson", lazy=True)
 
+    def json(self):
+        """
+        Convert to JSON
+        """
+        return {
+            "id": self.uuid,
+            "name": self.name,
+            "visible": self.visible,
+            "config": self.config,
+        }
+
     def __init__(self, name, class_id, config):
         self.name = name
         self.config = config
@@ -100,6 +111,17 @@ class Flag(db.Model):
     points = db.Column(db.Integer)
 
     lesson_id = db.Column(UUID(as_uuid=True), db.ForeignKey("lessons.uuid"))
+
+    def json(self):
+        """
+        Convert to JSON
+        """
+        return {
+            "id": self.uuid,
+            "style": self.style,
+            "config": self.config,
+            "points": self.points,
+        }
 
     def __init__(self, style, config, points, lesson_id):
         self.style = style

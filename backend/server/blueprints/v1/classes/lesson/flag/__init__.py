@@ -18,7 +18,7 @@ def create(class_id, lesson_id):
         new_flag = Flag("", "", 0, lesson_id)
         db.session.add(new_flag)
         db.session.commit()
-        return jsonify(new_flag.json())
+        return jsonify(new_flag.json()), 201
     return "Flag Name Required", 400
 
 @bp.route("/", methods=["GET"])
@@ -28,7 +28,7 @@ def read(class_id, lesson_id):
     """
     id_filter = request.args.get("id")
     if id_filter:
-        return jsonify(Flag.query.get(id_filter).json())
+        return jsonify([Flag.query.get(id_filter).json()])
     return jsonify(list(map(lambda x: x.json(), Flag.query.all())))
 
 @bp.route("/<flag_id>", methods=["PUT"])
