@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+    import * as api from "$lib/api";
     import AddDivider from "$lib/components/generic/AddDivider.svelte";
     import Button from "$lib/components/generic/Button.svelte";
     import PageTitle from "$lib/components/generic/PageTitle.svelte";
@@ -6,8 +7,26 @@
     import ProvisionCard from "$lib/components/renderable/ProvisionCard.svelte";
     import TextCard from "$lib/components/renderable/TextCard.svelte";
     import { json } from "@sveltejs/kit";
+    import { page } from "$app/stores";
+    import { onMount } from "svelte";
 
     
+    var lesson: api.Lesson | null = null;
+    var lessonId = $page.params.lessonid;
+
+   async function loadLesson() {
+        api.getLessonById($page.params.classid, lessonId).then((res) => {
+            lesson = res;
+            if(res != null){
+                var conf = res.config ? JSON.parse(res.config) : null;
+                if (conf != null){
+                    cards = conf["cards"];
+                }
+            }
+            
+        });
+      
+    }
 
     /**
      * @property mode {('view'|'edit')}
@@ -16,27 +35,7 @@
     /**
      * @type {any[]}
      */
-    var cards = [
-        {
-            type: "ctf",
-            config: {
-                title: "Test",
-                description: "Config",
-                flag: "RS{CONFIG}",
-            },
-        },
-        {
-            type: "text",
-            config: {
-                value: "<h1>Hello, World</h1>",
-            },
-        },
-        {
-            type: "vm",
-            config:{
-                image:"http://cdn.example.com/path/to/image.ova"
-            }
-        }
+    var cards: any[] = [
     ];
 
     function toggleView() {
@@ -72,13 +71,44 @@
         }
        cards = cards;
     }
+
+    onMount(()=>{
+    loadLesson();
+
+
+});
+
+async function saveLesson(){
+    var conf = {
+        cards: cards,
+    }
+
+    if (lesson != null) {
+        lesson.config = JSON.stringify(conf);
+
+        var res = await api.updateLesson($page.params.classid, lessonId, lesson);
+        if (res != null){
+        console.log("Saved");
+    }
+    }
+    
+}
+
+async function publishLesson(){
+    if(lesson != null){
+        lesson.visible = !lesson.visible;
+        await saveLesson();
+    }
+    
+}
+
 </script>
 
 <PageTitle>
-    <span slot="title">Intro to Linux</span>
+    <span slot="title">{lesson?.name}</span>
     <span slot="actions">
-        <Button>Save</Button>&nbsp;
-        <Button style="secondary">Publish</Button>&nbsp;
+        <Button callback={()=>{saveLesson();}}>Save</Button>&nbsp;
+        <Button style="secondary" callback={()=>{publishLesson();}}>{lesson?.visible ? "Unpublish":"Publish"}</Button>&nbsp;
         <Button
             style="secondary"
             callback={() => {

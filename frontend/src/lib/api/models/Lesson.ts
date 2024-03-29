@@ -24,7 +24,7 @@ export interface Lesson {
      * @type {string}
      * @memberof Lesson
      */
-    uuid?: string;
+    id?: string;
     /**
      * 
      * @type {string}
@@ -63,7 +63,7 @@ export function LessonFromJSONTyped(json: any, ignoreDiscriminator: boolean): Le
     }
     return {
         
-        'uuid': json['uuid'] == null ? undefined : json['uuid'],
+        'id': json['id'] == null ? undefined : json['id'],
         'name': json['name'],
         'config': json['config'] == null ? undefined : json['config'],
         'visible': json['visible'] == null ? undefined : json['visible'],
@@ -76,7 +76,7 @@ export function LessonToJSON(value?: Lesson | null): any {
     }
     return {
         
-        'uuid': value['uuid'],
+        'id': value['id'],
         'name': value['name'],
         'config': value['config'],
         'visible': value['visible'],

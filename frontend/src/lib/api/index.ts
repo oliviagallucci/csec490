@@ -1,136 +1,162 @@
+import { ClassFromJSON, type Class, type Lesson, LessonFromJSON } from './models/index';
+
 /* tslint:disable */
 
-import { ClassFromJSON, type Class, type Lesson, LessonFromJSON } from './models/index';
 
 /* eslint-disable */
 export * from './runtime';
 export * from './apis/index';
 export * from './models/index';
 
-const server_url = 'http://localhost:8000/api/v1'
+const server_url = 'http://localhost:8080/api/v1';
 
-export function getClasses(): Class[] {
-    fetch(`${server_url}/class`).then(response => response.json()).then(data => {
-        var classes = data.map((class_data: any) => ClassFromJSON(class_data))
-        return classes
-    }).catch(error => {
+export async function getClasses(): Promise<Class[]> {
+    try {
+        const response = await fetch(`${server_url}/class`);
+        const data = await response.json();
+        const classes = data.map((class_data: any) => ClassFromJSON(class_data));
+        return classes;
+    } catch (error) {
         console.error('Error:', error);
-        return []
-    });
-    return [];
-}
-
-export function getClassById(class_id: string): Class | null {
-    fetch(`${server_url}/class/${class_id}`).then(response => response.json()).then(data => {
-        return ClassFromJSON(data)
-    }).catch(error => {
-        console.error('Error:', error);
-        return null
-    });
-    return null;
+        return [];
+    }
 }
 
-export function createClass(class_data: Class): Class | null {
-    fetch(`${server_url}/class`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(class_data),
-    }).then(response => response.json()).then(data => {
-        return ClassFromJSON(data)
-    }).catch(error => {
+export async function getClassById(class_id: string): Promise<Class | null> {
+    try {
+        const response = await fetch(`${server_url}/class?id=${class_id}`);
+        const data = await response.json();
+        return ClassFromJSON(data[0]);
+    } catch (error) {
         console.error('Error:', error);
-        return null
-    });
-    return null;
+        return null;
+    }
 }
 
-export function updateClass(class_id: string, class_data: Class): Class | null {
-    fetch(`${server_url}/class/${class_id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(class_data),
-    }).then(response => response.json()).then(data => {
-        return ClassFromJSON(data)
-    }).catch(error => {
+export async function createClass(class_data: Class): Promise<Class | null> {
+    try {
+        const response = await fetch(`${server_url}/class`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(class_data),
+        });
+        const data = await response.json();
+        return ClassFromJSON(data);
+    } catch (error) {
         console.error('Error:', error);
-        return null
-    });
-    return null;
+        return null;
+    }
 }
 
-export function deleteClass(class_id: string): boolean {
-    fetch(`${server_url}/class/${class_id}`, {
-        method: 'DELETE',
-    }).then(response => response.json()).then(data => {
-        return true
-    }).catch(error => {
+export async function updateClass(class_id: string, class_data: Class): Promise<Class | null> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(class_data),
+        });
+        const data = await response.json();
+        return ClassFromJSON(data);
+    } catch (error) {
         console.error('Error:', error);
-        return false
-    });
-    return false;
+        return null;
+    }
 }
 
-export function getLessonsByClassId(class_id: string): Lesson[] {
-    fetch(`${server_url}/class/${class_id}/lesson`).then(response => response.json()).then(data => {
-        var lessons = data.map((lesson_data: any) => LessonFromJSON(lesson_data))
-        return lessons
-    }).catch(error => {
+export async function deleteClass(class_id: string): Promise<boolean> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}`, {
+            method: 'DELETE',
+        });
+        await response.json();
+        return true;
+    } catch (error) {
         console.error('Error:', error);
-        return []
-    });
-    return [];
+        return false;
+    }
 }
-export function getLessonById(class_id: string, lesson_id: string): Lesson | null{
-    fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}`).then(response => response.json()).then(data => {
-        return LessonFromJSON(data)
-    }).catch(error => {
+
+export async function getLessonsByClassId(class_id: string): Promise<Lesson[]> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson`);
+        const data = await response.json();
+        const lessons = data.map((lesson_data: any) => LessonFromJSON(lesson_data));
+        return lessons;
+    } catch (error) {
         console.error('Error:', error);
-        return null
-    });
-    return null;
+        return [];
+    }
 }
-export function createLesson(class_id: string, lesson_data: Lesson): Lesson | null{
-    fetch(`${server_url}/class/${class_id}/lesson`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(lesson_data),
-    }).then(response => response.json()).then(data => {
-        return LessonFromJSON(data)
-    }).catch(error => {
+
+export async function getLessonById(class_id: string, lesson_id: string): Promise<Lesson | null> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson?id=${lesson_id}`);
+        const data = await response.json();
+        return LessonFromJSON(data[0]);
+    } catch (error) {
         console.error('Error:', error);
-        return null
-    });
-    return null;
+        return null;
+    }
 }
-export function updateLesson(class_id: string, lesson_id: string, lesson_data: Lesson): Lesson | null{
-    fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(lesson_data),
-    }).then(response => response.json()).then(data => {
-        return LessonFromJSON(data)
-    }).catch(error => {
+
+export async function createLesson(class_id: string, lesson_data: Lesson): Promise<Lesson | null> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(lesson_data),
+        });
+        const data = await response.json();
+        return LessonFromJSON(data);
+    } catch (error) {
         console.error('Error:', error);
-        return null
-    });
-    return null;
+        return null;
+    }
 }
-export function deleteLesson(class_id: string, lesson_id: string): boolean{
-    fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}`, {
-        method: 'DELETE',
-    }).then(response => response.json()).then(data => {
-        return true
-    }).catch(error => {
+
+export async function updateLesson(class_id: string, lesson_id: string, lesson_data: Lesson): Promise<Lesson | null> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(lesson_data),
+        });
+        const data = await response.json();
+        return LessonFromJSON(data);
+    } catch (error) {
         console.error('Error:', error);
-        return false
-    });
-    return false;
+        return null;
+    }
+}
+
+export async function deleteLesson(class_id: string, lesson_id: string): Promise<boolean> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}`, {
+            method: 'DELETE',
+        });
+        await response.json();
+        return true;
+    } catch (error) {
+        console.error('Error:', error);
+        return false;
+    }
+}
+
+export async function getAllFlags(class_id: string, lesson_id: string): Promise<any> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}/flag`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
+    }
 }

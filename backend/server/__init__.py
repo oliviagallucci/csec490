@@ -24,8 +24,8 @@ from .models import *
 
 app.register_blueprint(api_bp, url_prefix="/api")
 
-@app.route("/", defaults={"path": ""})
-@app.route("/<path:path>")
+@app.route("/", defaults={"_path": ""})
+@app.route("/<path:_path>")
 def index(_path):
     """
     Default serve frontend

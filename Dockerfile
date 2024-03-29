@@ -1,8 +1,9 @@
 FROM node:20 AS frontend
 WORKDIR /opt/frontend
-COPY frontend/package.json .
-RUN npm install
+#COPY frontend/package.json .
+#RUN npm install
 COPY frontend/ .
+RUN npm install
 RUN npm run build
 
 FROM python:3.11-bookworm
