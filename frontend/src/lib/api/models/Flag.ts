@@ -43,6 +43,11 @@ export interface Flag {
      * @memberof Flag
      */
     points?: number;
+    /**
+     * @type {string}
+     * @memberof Flag
+     */
+    name?: string;
 }
 
 /**
@@ -66,6 +71,7 @@ export function FlagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Flag
         'style': json['style'] == null ? undefined : json['style'],
         'config': json['config'] == null ? undefined : json['config'],
         'points': json['points'] == null ? undefined : json['points'],
+        'name': json['name'] == null ? undefined : json['name'],
     };
 }
 
@@ -79,6 +85,7 @@ export function FlagToJSON(value?: Flag | null): any {
         'style': value['style'],
         'config': value['config'],
         'points': value['points'],
+        'name': value['name'],
     };
 }
 

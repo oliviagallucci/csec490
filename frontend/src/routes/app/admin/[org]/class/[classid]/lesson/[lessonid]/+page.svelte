@@ -45,16 +45,27 @@
             mode = "view";
         }
     }
-    function addElement(index, type){
+    async function addElement(index, type){
         if (type == "ctf"){
-            cards.splice(index, 0,{
-                type:"ctf",
-                config: {
-                title: "Test",
-                description: "Config",
-                flag: "RS{CONFIG}",
-            },
-            })
+            //Create a new ctf card
+            var res = await api.createFlag($page.params.classid, lessonId, {
+                uuid: crypto.randomUUID(),
+                name: "Test",
+                config: JSON.stringify({
+                    title: "Test",
+                    description: "This is a test flag",
+                    flag: "RS{FLAG}",
+                }),
+            });
+            if (res != null){
+
+                cards.splice(index, 0,{
+                    type:"ctf",
+                    config: {
+                    uuid: res.uuid
+                },
+                })
+        }
 
         }else if(type == "text"){
             cards.splice(index, 0,{

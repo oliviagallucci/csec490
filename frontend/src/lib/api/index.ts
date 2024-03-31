@@ -1,4 +1,4 @@
-import { ClassFromJSON, type Class, type Lesson, LessonFromJSON } from './models/index';
+import { ClassFromJSON, type Class, type Lesson, LessonFromJSON, type Flag, FlagFromJSON } from './models/index';
 
 /* tslint:disable */
 
@@ -158,5 +158,31 @@ export async function getAllFlags(class_id: string, lesson_id: string): Promise<
     } catch (error) {
         console.error('Error:', error);
         return [];
+    }
+}
+export async function getFlagById(class_id: string, lesson_id: string, flag_id: string): Promise<Flag | null> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}/flag?id=${flag_id}`);
+        const data = await response.json();
+        return FlagFromJSON(data[0]);
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
+export async function createFlag(class_id: string, lesson_id: string, flag_data: Flag): Promise<Flag | null> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}/flag`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(flag_data),
+        });
+        const data = await response.json();
+        return FlagFromJSON(data);
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
     }
 }
