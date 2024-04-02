@@ -36,9 +36,9 @@ class Class(db.Model):
     """
     __tablename__ = "classes"
 
-    uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    # uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String)
-    slug = db.Column(db.String)
+    slug = db.Column(db.String, primary_key=True)
     visible = db.Column(db.Boolean, default=True)
 
     lessons = db.relationship("Lesson", backref="class", lazy=True)
@@ -58,12 +58,13 @@ class Lesson(db.Model):
     """
     __tablename__ = "lessons"
 
-    uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    # uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String)
+    slug = db.Column(db.String, primary_key=True)
     visible = db.Column(db.Boolean, default=True)
     config = db.Column(db.String)
 
-    class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
+    # class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
     flags = db.relationship("Flag", backref="lesson", lazy=True)
 
     def __init__(self, name, class_id, config):
