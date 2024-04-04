@@ -67,7 +67,7 @@ export function FlagFromJSONTyped(json: any, ignoreDiscriminator: boolean): Flag
     }
     return {
         
-        'uuid': json['uuid'] == null ? undefined : json['uuid'],
+        'uuid': json['id'] == null ? undefined : json['id'],
         'style': json['style'] == null ? undefined : json['style'],
         'config': json['config'] == null ? undefined : json['config'],
         'points': json['points'] == null ? undefined : json['points'],
@@ -81,7 +81,7 @@ export function FlagToJSON(value?: Flag | null): any {
     }
     return {
         
-        'uuid': value['uuid'],
+        'id': value['uuid'],
         'style': value['style'],
         'config': value['config'],
         'points': value['points'],

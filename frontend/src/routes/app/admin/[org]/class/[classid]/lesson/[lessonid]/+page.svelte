@@ -49,7 +49,7 @@
         if (type == "ctf"){
             //Create a new ctf card
             var res = await api.createFlag($page.params.classid, lessonId, {
-                uuid: crypto.randomUUID(),
+                uuid: "",
                 name: "Test",
                 config: JSON.stringify({
                     title: "Test",
@@ -58,6 +58,7 @@
                 }),
             });
             if (res != null){
+                alert(JSON.stringify(res));
 
                 cards.splice(index, 0,{
                     type:"ctf",
@@ -139,7 +140,7 @@ async function publishLesson(){
     
 
     {#if c["type"] == "ctf"}
-        <CtfCard {mode} bind:config={cards[index]["config"]} />
+        <CtfCard {mode} bind:config={cards[index]["config"]} classId={$page.params["classid"]} lessonId={$page.params["lessonid"]}/>
     {:else if c["type"] == "text"}
         <TextCard {mode} bind:config={cards[index]["config"]} />
     {:else if c["type"] == "vm"}

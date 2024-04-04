@@ -186,3 +186,20 @@ export async function createFlag(class_id: string, lesson_id: string, flag_data:
         return null;
     }
 }
+
+export async function updateFlag(class_id: string, lesson_id: string, flag_id: string, flag_data: Flag): Promise<Flag | null> {
+    try {
+        const response = await fetch(`${server_url}/class/${class_id}/lesson/${lesson_id}/flag/${flag_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(flag_data),
+        });
+        const data = await response.json();
+        return FlagFromJSON(data);
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+}
