@@ -22,7 +22,7 @@ def bind_vm_to_lesson(class_id, lesson_id):
     lesson.vm_image = image
     lesson.vm_flavor = flavor
     db.session.commit()
-    return "Not Implemented", 400
+    return "Template Assigned", 201
 
 
 @bp.route("/", methods=["DELETE"])
