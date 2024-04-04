@@ -149,16 +149,6 @@ class Flag(db.Model):
             "config": self.config,
             "points": self.points,
         }
-<<<<<<< HEAD
-
-    def __init__(self, style, config, points, lesson_id):
-        self.style = style
-        self.config = config
-        self.points = points
-        self.lesson_id = lesson_id
-
-    def __repr__(self):
-        return f"<Flag {self.uuid}>"
 
 
 class LessonVM(db.Model):
@@ -181,10 +171,6 @@ class LessonVM(db.Model):
     def __repr__(self):
         return f"<LessonVM {self.uuid}>"
 
-
-=======
-      
->>>>>>> main
 class User(db.Model):
     """
     Users in an organization

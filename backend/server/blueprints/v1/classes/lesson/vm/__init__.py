@@ -56,6 +56,12 @@ def request_vm(class_id, lesson_id):
     db.session.commit()
     return "VM Created", 200
 
+@bp.route("/time", methods=["GET"])
+@login_required
+def get_time(class_id, lesson_id):
+    lesson_vm = LessonVM.query.filter_by(lesson_id=lesson_id, user=current_user.username).first()
+    vm_id = str(lesson_vm.vm_id)
+    return redis_client.ttl(vm_id), 200
 
 @bp.route("/renew", methods=["POST"])
 @login_required
