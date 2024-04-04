@@ -6,6 +6,7 @@ Will convert into migrations
 
 import uuid
 from passlib.hash import bcrypt
+from slugify import slugify
 from sqlalchemy.dialects.postgresql import UUID
 from slugify import slugify
 from server import db
@@ -41,9 +42,9 @@ class Class(db.Model):
 
     __tablename__ = "classes"
 
-    uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    # uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String)
-    slug = db.Column(db.String)
+    slug = db.Column(db.String, primary_key=True)
     visible = db.Column(db.Boolean, default=True)
 
     lessons = db.relationship("Lesson", backref="class", lazy=True)
@@ -75,14 +76,17 @@ class Lesson(db.Model):
 
     __tablename__ = "lessons"
 
-    uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    # uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String)
+    class_id = db.Column(db.String, db.ForeignKey("classes.slug"), primary_key=True)
+    slug = db.Column(db.String, primary_key=True)
+    visible = db.Column(db.Boolean, default=True)
     config = db.Column(db.String)
     visible = db.Column(db.Boolean, default=True)
     vm_image = db.Column(db.String)
     vm_flavor = db.Column(db.String)
 
-    class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
+    # class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
     flags = db.relationship("Flag", backref="lesson", lazy=True)
 
     def json(self):
@@ -98,8 +102,9 @@ class Lesson(db.Model):
 
     def __init__(self, name, class_id, config):
         self.name = name
-        self.config = config
+        self.slug = slugify(name)
         self.class_id = class_id
+        self.config = config
 
     def __repr__(self):
         return f"<Lesson {self.name}>"
@@ -117,7 +122,22 @@ class Flag(db.Model):
     config = db.Column(db.String)
     points = db.Column(db.Integer)
 
-    lesson_id = db.Column(UUID(as_uuid=True), db.ForeignKey("lessons.uuid"))
+    class_id = db.Column(db.String, nullable=False)
+    lesson_id = db.Column(db.String, nullable=False)
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(['class_id', 'lesson_id'], ['lessons.class_id', 'lessons.slug'], name='fk_flag_lesson'),
+    )
+
+    def __init__(self, style, config, points, class_id, lesson_id):
+        self.style = style
+        self.config = config
+        self.points = points
+        self.class_id = class_id
+        self.lesson_id = lesson_id
+
+    def __repr__(self):
+        return f"<Flag {self.uuid}>"
 
     def json(self):
         """
@@ -129,6 +149,7 @@ class Flag(db.Model):
             "config": self.config,
             "points": self.points,
         }
+<<<<<<< HEAD
 
     def __init__(self, style, config, points, lesson_id):
         self.style = style
@@ -161,6 +182,9 @@ class LessonVM(db.Model):
         return f"<LessonVM {self.uuid}>"
 
 
+=======
+      
+>>>>>>> main
 class User(db.Model):
     """
     Users in an organization
@@ -219,8 +243,8 @@ class Permissions(db.Model):
     __tablename__ = "permissions"
 
     uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    username = db.Column(db.String, db.ForeignKey("users.username"))
-    class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
+    username = db.Column(db.String, db.ForeignKey("users.username"), nullable=False)
+    class_id = db.Column(db.String, db.ForeignKey("classes.slug"), nullable=False)
     read_lessons = db.Column(db.Boolean)
     read_hidden_lessons = db.Column(db.Boolean)
     modify_lessons = db.Column(db.Boolean)
