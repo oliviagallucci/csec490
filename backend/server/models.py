@@ -5,6 +5,7 @@ Will convert into migrations
 """
 import uuid
 from passlib.hash import bcrypt
+from slugify import slugify
 from sqlalchemy.dialects.postgresql import UUID
 from server import db
 
@@ -45,6 +46,7 @@ class Class(db.Model):
 
     def __init__(self, name, organization_id):
         self.name = name
+        self.slug = slugify(name)
         self.organization_id = organization_id
 
     def __repr__(self):
@@ -60,6 +62,7 @@ class Lesson(db.Model):
 
     # uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = db.Column(db.String)
+    class_id = db.Column(db.String, db.ForeignKey("classes.slug"), primary_key=True)
     slug = db.Column(db.String, primary_key=True)
     visible = db.Column(db.Boolean, default=True)
     config = db.Column(db.String)
@@ -69,6 +72,7 @@ class Lesson(db.Model):
 
     def __init__(self, name, class_id, config):
         self.name = name
+        self.slug = slugify(name)
         self.class_id = class_id
         self.config = config
 
@@ -87,12 +91,18 @@ class Flag(db.Model):
     config = db.Column(db.String)
     points = db.Column(db.Integer)
 
-    lesson_id = db.Column(UUID(as_uuid=True), db.ForeignKey("lessons.uuid"))
+    class_id = db.Column(db.String, nullable=False)
+    lesson_id = db.Column(db.String, nullable=False)
 
-    def __init__(self, style, config, points, lesson_id):
+    __table_args__ = (
+        db.ForeignKeyConstraint(['class_id', 'lesson_id'], ['lessons.class_id', 'lessons.slug'], name='fk_flag_lesson'),
+    )
+
+    def __init__(self, style, config, points, class_id, lesson_id):
         self.style = style
         self.config = config
         self.points = points
+        self.class_id = class_id
         self.lesson_id = lesson_id
 
     def __repr__(self):
@@ -146,8 +156,8 @@ class Permission(db.Model):
     __tablename__ = "permissions"
 
     uuid = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    username = db.Column(db.String, db.ForeignKey("users.username"))
-    class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
+    username = db.Column(db.String, db.ForeignKey("users.username"), nullable=False)
+    class_id = db.Column(db.String, db.ForeignKey("classes.slug"), nullable=False)
     read_lessons = db.Column(db.Boolean)
     read_hidden_lessons = db.Column(db.Boolean)
     modify_lessons = db.Column(db.Boolean)
