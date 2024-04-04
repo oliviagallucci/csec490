@@ -24,7 +24,7 @@
     };
 
     export var obj: api.Flag = {
-        uuid: config["uuid"],
+        id: config["uuid"],
         name: ctfConf["title"],
         config: JSON.stringify(ctfConf),
         points: ctfConf["points"]??10

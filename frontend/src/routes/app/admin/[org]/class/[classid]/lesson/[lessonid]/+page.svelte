@@ -49,7 +49,7 @@
         if (type == "ctf"){
             //Create a new ctf card
             var res = await api.createFlag($page.params.classid, lessonId, {
-                uuid: "",
+                id: "",
                 name: "Test",
                 config: JSON.stringify({
                     title: "Test",
@@ -63,7 +63,7 @@
                 cards.splice(index, 0,{
                     type:"ctf",
                     config: {
-                    uuid: res.uuid
+                    uuid: res.id
                 },
                 })
         }
