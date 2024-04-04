@@ -9,4 +9,4 @@ SQLALCHEMY_DATABASE_URI = environ.get("SQLALCHEMY_DATABASE_URI", "")
 REDIS_HOST = environ.get("REDIS_HOST", "")
 
 VM_PROVIDER = environ.get("VM_PROVIDER", "")
-SECRET_KEY = "wopkadpokwadpowakdwapdowkapoda"
+SECRET_KEY = environ.get("SECRET_KEY", "super_secret_key")

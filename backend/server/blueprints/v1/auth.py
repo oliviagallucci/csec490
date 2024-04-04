@@ -23,7 +23,6 @@ def login_post():
 
     if not acct or not bcrypt.verify(password, acct.password):
         return "Invalid username or password", 403
-    print(acct.is_active)
     login_user(acct)
     return "Login Successful", 200
 
@@ -36,11 +35,3 @@ def logout():
     """
     logout_user()
     return "Logout Complete", 200
-
-@auth_bp.route("/test")
-@login_required
-def test():
-    """
-    Test route
-    """
-    return current_user.username, 200
