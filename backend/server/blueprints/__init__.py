@@ -1,6 +1,7 @@
 """
 Define all sub-routes for /api
 """
+
 from flask import Blueprint
 from .v1 import v1_bp
 

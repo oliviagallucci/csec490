@@ -6,7 +6,7 @@ COPY frontend/ .
 RUN npm run build
 
 FROM python:3.11-bookworm
-WORKDIR /opt/server
+WORKDIR /app
 COPY backend/requirements.txt .
 RUN pip install -r requirements.txt
 COPY backend/ .
