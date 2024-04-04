@@ -47,7 +47,7 @@ def request_vm(class_id, lesson_id):
     class_data = Class.query.filter_by(uuid=class_id).first()
     lesson = Lesson.query.filter_by(uuid=lesson_id).first()
     vm = provider.create_vm(
-        f"{class_data.slug}-{current_user.username}", lesson.vm_image, lesson.vm_flavor
+        f"{class_data.slug}-{lesson.slug}-{current_user.username}", lesson.vm_image, lesson.vm_flavor
     )
     vm_id = vm['server']['id']
     redis_client.setex(vm_id, 60 * 15, current_user.username)
