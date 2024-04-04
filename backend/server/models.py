@@ -8,6 +8,7 @@ from passlib.hash import bcrypt
 from slugify import slugify
 from sqlalchemy.dialects.postgresql import UUID
 from server import db
+from slugify import slugify
 
 # pylint: disable=too-few-public-methods
 
@@ -44,10 +45,20 @@ class Class(db.Model):
 
     lessons = db.relationship("Lesson", backref="class", lazy=True)
 
-    def __init__(self, name, organization_id):
+    def json(self):
+        """
+        Convert to JSON
+        """
+        return {
+            "id": self.uuid,
+            "name": self.name,
+            "slug": self.slug,
+            "visible": self.visible,
+        }
+
+    def __init__(self, name):
         self.name = name
         self.slug = slugify(name)
-        self.organization_id = organization_id
 
     def __repr__(self):
         return f"<Class {self.name}>"
@@ -66,15 +77,28 @@ class Lesson(db.Model):
     slug = db.Column(db.String, primary_key=True)
     visible = db.Column(db.Boolean, default=True)
     config = db.Column(db.String)
+    visible = db.Column(db.Boolean, default=True)
 
     # class_id = db.Column(UUID(as_uuid=True), db.ForeignKey("classes.uuid"))
     flags = db.relationship("Flag", backref="lesson", lazy=True)
+
+    def json(self):
+        """
+        Convert to JSON
+        """
+        return {
+            "id": self.uuid,
+            "name": self.name,
+            "visible": self.visible,
+            "config": self.config,
+        }
 
     def __init__(self, name, class_id, config):
         self.name = name
         self.slug = slugify(name)
         self.class_id = class_id
         self.config = config
+        
 
     def __repr__(self):
         return f"<Lesson {self.name}>"
@@ -108,7 +132,17 @@ class Flag(db.Model):
     def __repr__(self):
         return f"<Flag {self.uuid}>"
 
-
+    def json(self):
+        """
+        Convert to JSON
+        """
+        return {
+            "id": self.uuid,
+            "style": self.style,
+            "config": self.config,
+            "points": self.points,
+        }
+      
 class User(db.Model):
     """
     Users in an organization
@@ -140,7 +174,7 @@ class User(db.Model):
         Check if user has given permissions in a class
         """
         return (
-            Permission.query.filter_by(username=self.username, class_id=class_id)
+            Permissions.query.filter_by(username=self.username, class_id=class_id)
             .first()
             .bitmap()
             & permission.bitmap()
@@ -148,7 +182,7 @@ class User(db.Model):
         )
 
 
-class Permission(db.Model):
+class Permissions(db.Model):
     # pylint: disable=too-many-instance-attributes
     """
     Permissions for users in classes

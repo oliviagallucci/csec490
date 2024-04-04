@@ -47,6 +47,7 @@ def upgrade():
         ),
         sa.PrimaryKeyConstraint("uuid"),
     )
+
     with op.batch_alter_table("classes", schema=None) as batch_op:
         batch_op.drop_constraint("classes_organization_id_fkey", type_="foreignkey")
         batch_op.drop_column("organization_id")
