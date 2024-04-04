@@ -24,7 +24,7 @@ export interface Class {
      * @type {string}
      * @memberof Class
      */
-    uuid?: string;
+    id?: string;
     /**
      * 
      * @type {string}
@@ -63,7 +63,7 @@ export function ClassFromJSONTyped(json: any, ignoreDiscriminator: boolean): Cla
     }
     return {
         
-        'uuid': json['uuid'] == null ? undefined : json['uuid'],
+        'id': json['id'] == null ? undefined : json['id'],
         'name': json['name'],
         'slug': json['slug'] == null ? undefined : json['slug'],
         'visible': json['visible'] == null ? undefined : json['visible'],
@@ -76,7 +76,7 @@ export function ClassToJSON(value?: Class | null): any {
     }
     return {
         
-        'uuid': value['uuid'],
+        'uuid': value['id'],
         'name': value['name'],
         'slug': value['slug'],
         'visible': value['visible'],

@@ -11,7 +11,7 @@
             name: className,
             slug: classId,
             visible: false,
-            uuid: crypto.randomUUID()
+            id: crypto.randomUUID()
         }
         var res = await api.createClass(c);
         
