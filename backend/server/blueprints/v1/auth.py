@@ -1,14 +1,15 @@
 """
 This module contains the authentication routes
 """
+
 from flask import Blueprint, request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from passlib.hash import bcrypt
 from server.models import User
 
 
-
 auth_bp = Blueprint("auth", __name__)
+
 
 @auth_bp.route("/login", methods=["POST"])
 def login_post():
@@ -22,7 +23,6 @@ def login_post():
 
     if not acct or not bcrypt.verify(password, acct.password):
         return "Invalid username or password", 403
-
     login_user(acct)
     return "Login Successful", 200
 

@@ -1,6 +1,7 @@
 """
 Defines sub-routes of /api/v1
 """
+
 from flask import Blueprint
 from .auth import auth_bp
 from .classes import bp as class_bp

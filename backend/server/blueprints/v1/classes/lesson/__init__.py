@@ -1,15 +1,19 @@
 """
 TODO
 """
+
 from flask import Blueprint, request, jsonify
-from .flag import bp as flag_bp
-from server.models import Lesson
+from flask_login import login_required, current_user
 from server import db
+from server.models import Lesson
+from .flag import bp as flag_bp
+from .vm import bp as vm_bp
 
 bp = Blueprint("lesson", __name__)
 
 
 @bp.route("/", methods=["POST"])
+@login_required
 def create(class_id):
     """
     TODO
@@ -22,7 +26,9 @@ def create(class_id):
         return jsonify(new_lesson.json()), 201
     return "Lesson Name Required", 400
 
+
 @bp.route("/", methods=["GET"])
+@login_required
 def read(class_id):
     """
     TODO
@@ -32,7 +38,9 @@ def read(class_id):
         return jsonify([Lesson.query.get(id_filter).json()])
     return jsonify(list(map(lambda x: x.json(), Lesson.query.all())))
 
+
 @bp.route("/<lesson_id>", methods=["PUT"])
+@login_required
 def update(class_id, lesson_id):
     """
     TODO
@@ -49,7 +57,9 @@ def update(class_id, lesson_id):
     db.session.commit()
     return jsonify(lesson_to_update.json())
 
+
 @bp.route("/<lesson_id>", methods=["DELETE"])
+@login_required
 def delete(class_id, lesson_id):
     """
     TODO
@@ -61,4 +71,6 @@ def delete(class_id, lesson_id):
     db.session.commit()
     return "Lesson Deleted", 200
 
+
 bp.register_blueprint(flag_bp, url_prefix="/<lesson_id>/flag")
+bp.register_blueprint(vm_bp, url_prefix="/<lesson_id>/vm")
