@@ -14,12 +14,12 @@
     });
 
     function goToClass(c: api.Class){
-        goto(`/app/admin/${$page.params.org}/class/${c.slug}`);
+        goto(`/app/admin/${$page.params.org}/class/${c.id}`);
     }
 </script>
 <SearchBox bind:value={search} />
 <br>
-
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 {#each classes as c}
     {#if c.name.includes(search) || (c.slug ?? '').includes(search)}
     <ClassCard c={c}>
@@ -29,3 +29,4 @@
     </ClassCard>
     {/if}
 {/each}
+</div>

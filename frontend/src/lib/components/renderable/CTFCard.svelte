@@ -97,6 +97,11 @@
             
         </div>
         <div class="mt-2">
+            <label
+            for="points"
+            class="block text-sm font-medium leading-6 text-gray-900"
+            >Points</label
+        >
             <input
                 type="number"
                 name="points"
