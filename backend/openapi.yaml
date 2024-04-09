@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: CSEC 490 API
-  version: 0.0.1
+  version: 0.0.2
 
 paths:
   /api/v1/class:
@@ -12,7 +12,6 @@ paths:
           name: id
           schema:
             type: string
-            format: uuid
           description: The ID of the class
       responses:
         '200':
@@ -47,7 +46,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
       requestBody:
         required: true
@@ -70,7 +68,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
       responses:
         '200':
@@ -84,13 +81,11 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
         - in: query
           name: id
           schema:
             type: string
-            format: uuid
           description: The ID of the lesson
       responses:
         '200':
@@ -109,7 +104,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
       requestBody:
         required: true
@@ -133,14 +127,12 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
         - in: path
           name: lessonId
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
       requestBody:
         required: true
@@ -163,18 +155,57 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
         - in: path
           name: lessonId
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the lesson
       responses:
         '200':
           description: Lesson deleted
+  /api/v1/class/{classId}/lesson/{lessonId}/vm:
+    post:
+      summary: Create VM template for a lesson
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VirtualMachineTemplate'
+      responses:
+        '201':
+          description: VM template created
+    delete:
+      summary: Delete VM template for a lesson
+      responses:
+        '200':
+          description: VM template deleted
+  /api/v1/class/{classId}/lesson/{lessonId}/vm/request:
+    post:
+      summary: Request a VM for a lesson. Starts 15 minute timer
+      responses:
+        '200':
+          description: VM Created
+  /api/v1/class/{classId}/lesson/{lessonId}/vm/renew:
+    post:
+      summary: Renew VM back to 15 minutes
+      responses:
+        '200':
+          description: VM Timer reset to 15 minutes
+  /api/v1/class/{classId}/lesson/{lessonId}/vm/console:
+    post:
+      summary: Get console URL for VM
+      responses:
+        '200':
+          description: Console noVNC URL
+  /api/v1/class/{classId}/lesson/{lessonId}/vm/teardown:
+    post:
+      summary: Teardown VM
+      responses:
+        '200':
+          description: VM Teardown
   /api/v1/class/{classId}/lesson/{lessonId}/flag:
     get:
       summary: Get all flags, or a specific flag by ID
@@ -184,20 +215,17 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
         - in: path
           name: lessonId
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the lesson
         - in: query
           name: id
           schema:
             type: string
-            format: uuid
           description: The ID of the flag
       responses:
         '200':
@@ -216,14 +244,12 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
         - in: path
           name: lessonId
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the lesson
       requestBody:
         required: true
@@ -247,14 +273,12 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
         - in: path
           name: lessonId
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the lesson
         - in: path
           name: flagId
@@ -284,14 +308,12 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the class
         - in: path
           name: lessonId
           required: true
           schema:
             type: string
-            format: uuid
           description: The ID of the lesson
         - in: path
           name: flagId
@@ -308,9 +330,8 @@ components:
     Class:
       type: object
       properties:
-        uuid:
+        slug:
           type: string
-          format: uuid
         name:
           type: string
         slug:
@@ -322,9 +343,8 @@ components:
     Lesson:
       type: object
       properties:
-        uuid:
+        slug:
           type: string
-          format: uuid
         name:
           type: string
         config:
@@ -346,3 +366,16 @@ components:
         points:
           type: integer
       required: []
+    VirtualMachineTemplate:
+      type: object
+      properties:
+        image:
+          type: string
+          format: uuid
+        flavor:
+          type: string
+          format: uuid
+      required:
+        - image
+        - flavor
+
