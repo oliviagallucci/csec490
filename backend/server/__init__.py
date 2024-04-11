@@ -45,6 +45,7 @@ def load_user(username):
 
 @app.route("/", defaults={"path": ""})
 @app.route("/<path:path>")
+
 def index(_path):
     """
     Default serve frontend

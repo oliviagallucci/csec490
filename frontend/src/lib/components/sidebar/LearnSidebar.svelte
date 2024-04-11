@@ -1,6 +1,6 @@
 <script>
-import NavBarTextIcon from "./NavBarTextIcon.svelte";
-import SidebarItem from "./SidebarItem.svelte";
+import NavBarTextIcon from "../../../lib/components/sidebar/NavBarTextIcon.svelte";
+import SidebarItem from "../../../lib/components/sidebar/SidebarItem.svelte";
 
 </script>
 <div
